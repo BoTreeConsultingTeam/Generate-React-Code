@@ -10,11 +10,8 @@ Generate React Code
 This project utilises a scaffolding framework which generates React or React-Native code along with all the essential
 test code... Because who likes writing that themselves?!
 
-Additionally, it can be used to generate Redux code conforming to the [Redux ducks pattern](https://github.com/erikras/ducks-modular-redux) - and it can also be used to 
-generate the Redux core files needed for React-Redux projects (`store`, `root-reducer`, and `action-utilities`).
-
-This generated code conforms to the [Air BnB style guide's](https://github.com/airbnb/javascript) naming and coding-style
-conventions, and it is thus highly recommended to make use of this tool when creating new React or React-Redux components.
+Additionally, it can be used to generate Redux code and it can also be used to 
+generate the Redux core files needed for React-Redux projects (`store` and `root-reducer`).
 
 This package also allows users to add a configuration file containing default parameters. That way users would not have to specify these parameters every time they wish to generate code.
 
@@ -27,7 +24,7 @@ _IMPORTANT NOTE:_
 
 To install and save this npm package, navigate to your project's root directory in console and execute the following command:
 ```shell
-npm install generate-react-code --save-dev
+npm install https://github.com/BoTreeConsultingTeam/Generate-React-Code
 ```
 
 Then add the following script to your `packages.json` file:
@@ -56,8 +53,8 @@ npm run gen-react-code -- -n example-component -d src/example/dir -r
 | **`-N`** OR<br>**`--native`**               | If you wish to generate code for React-Native, add this parameter - else React web code will be generated.                                                                              | **`false`**              |
 | **`-r`** OR<br>**`--redux`**                | If you wish to generate Redux code in the duck pattern, add this parameter - else regular React code will be generated.                                                                 | **`false`**              |
 | **`-o`** OR<br>**`--omit-comments`**        | If you wish to hide the comments within the generated files, add this parameter - else descriptive comments will be left in the generated code.                                         | **`false`**              |
-| **`-R`** OR<br>**`--redux-core`**           | If you would like to generate the Redux core files (`store`, `root-reducer`, and `action-utilities`), add this parameter. These files are used to connect your application with Redux.  | **`false`**              |
-| **`-D`** OR<br>**`--redux-core-directory`** | This is the relative directory where the generated Redux core file will be placed (e.g `src/redux`). It is recommended to leave this as the default.                                    | **`src/redux`**          |
+| **`-R`** OR<br>**`--redux-core`**           | If you would like to generate the Redux core files (`store` and  `root-reducer`), add this parameter. These files are used to connect your application with Redux.  | **`false`**              |
+| **`-D`** OR<br>**`--redux-core-directory`** | This is the relative directory where the generated Redux core file will be placed (e.g `src/redux-core`). It is recommended to leave this as the default.                                    | **`src/redux-core`**          |
 | **`-f`** OR<br>**`--functional`**           | If you wish to generate a component as a functional component, use this parameter - else it will be class component.                                                                         | **`false`**          |
 | **`-h`** OR<br>**`--help`**                 | Output help usage information.                                                                                                                                                          |                          |
 
@@ -81,7 +78,7 @@ _IMPORTANT NOTE:_
 
 ## Generated Output Examples
 
-### React Example
+### React Class Component Example
 
 Given the following example code generation command:
 ```shell
@@ -104,7 +101,30 @@ functionality and general best practices.
 _IMPORTANT NOTE:_
 * _Remember to add generated style sheets to the main style sheet, which is usually located in `src/index.scss`_
 
-![Demo](assets/gen-react-code.png)
+
+### React Functional Component Example
+
+Given the following example code generation command:
+```shell
+npm run gen-react-code -- -n example-component -d src/components -f
+```
+The following file/folder structure will be generated (_take note that the `example-component` directory is generated without you having to specify it explicitly_):
+```
+project
+└───src
+    └───components
+        └───example-component
+            │   example-component.view.functional.js
+            │   _example-component.styles.scss
+            └───test
+                │   example-component.view.spec.js
+```
+Within these files the majority of the React code will be completed for you - which contains detailed comments on how to add your
+functionality and general best practices.
+
+_IMPORTANT NOTE:_
+* _Remember to add generated style sheets to the main style sheet, which is usually located in `src/index.scss`_
+
 
 ### React Example With Config
 
@@ -136,9 +156,8 @@ functionality and general best practices.
 _IMPORTANT NOTE:_
 * _Remember to add generated style sheets to the main style sheet, which is usually located in `src/index.scss`_
 
-![Demo](assets/gen-react-code-config.png)
 
-### React Native Example
+### React Native Class Component Example
 
 Given the following example code generation command:
 ```shell
@@ -157,7 +176,24 @@ project
 Within these files the majority of the React-Native code will be completed for you - which contains detailed comments on how to add your
 functionality and general best practices.
 
-![Demo](assets/gen-react-code-native.png)
+### React Native Functional Component Example
+
+Given the following example code generation command:
+```shell
+npm run gen-react-code -- -n example-component -d src/components -N -f
+```
+The following file/folder structure will be generated (_take note that the `example-component` directory is generated without you having to specify it explicitly_):
+```
+project
+└───src
+    └───components
+        └───example-component
+            │   example-component.view.functional.js
+            └───test
+                │   example-component.view.spec.js
+```
+Within these files the majority of the React-Native code will be completed for you - which contains detailed comments on how to add your
+functionality and general best practices.
 
 
 ### React With Redux Example
@@ -172,6 +208,7 @@ project
 └───src
     └───components
         └───example-component
+            │   example-component.action.js
             │   example-component.container.js
             │   example-component.reducer.js
             │   example-component.view.js
@@ -188,7 +225,6 @@ _IMPORTANT NOTE:_
 * _Remember to add generated reducers to the root reducer, which is usually located in `src/redux/root-reducer.js`_
 * _Remember to add generated style sheets to the main style sheet, which is usually located in `src/index.scss`_
 
-![Demo](assets/gen-react-code-redux.png)
 
 ### Redux Core Files Example
 
@@ -201,15 +237,9 @@ core files to be generated, irrespective of the other parameters_):
 ```
 project
 └───src
-    └───redux
+    └───redux-core
         │   store.js
         │   root-reducer.js
-        └───action-creator
-            │   build-action-type.js
-            │   create-action.js
-            └───test
-                │   build-action-type.spec.js
-                │   create-action.spec.js
 ```
 Within these files the majority of the React-Redux core code will be completed for you - which contains detailed comments on how to add your
 reducers and general best practices.
@@ -217,8 +247,4 @@ reducers and general best practices.
 _IMPORTANT NOTE:_
 * _Remember to add your `store` to your Redux `Provider` where you're rendering your main app, which is usually located in `src/index.js`_
 
-![Demo](assets/gen-react-code-redux-core.png)
 
-
-## Extra Material 
-A great example on how to use `generate-react-code` can be found [here](https://github.com/zulucoda/generate-react-code-test) (courtesy of [ZuluCoda](https://github.com/zulucoda)).
